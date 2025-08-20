@@ -1,0 +1,24 @@
+package im.ghosty.catboyaddons.utils
+
+import im.ghosty.catboyaddons.CatboyAddons
+import im.ghosty.catboyaddons.CatboyAddons.mc
+import net.minecraft.util.ChatComponentText
+import net.minecraft.util.EnumChatFormatting
+import org.apache.logging.log4j.LogManager
+
+object Utils {
+
+    fun String.remove(vararg patterns: String): String = patterns.fold(this) { acc, s -> acc.replace(s, "") }
+    fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, r -> acc.replace(r, "") }
+
+    private val unicodeRegex = Regex("[^\\u0000-\\u007F§]")
+    fun String.removeUnicode() = this.remove(unicodeRegex)
+
+    fun String.removeFormatting(): String = EnumChatFormatting.getTextWithoutFormattingCodes(this)
+
+    val logger = LogManager.getLogger("CatboyAddons")
+
+    fun sendToChat(message: String) = mc.ingameGUI?.chatGUI?.printChatMessage(ChatComponentText(CatboyAddons.PREFIX + message))
+    fun sendToConsole(message: String) = println("[Catboy] $message")
+
+}

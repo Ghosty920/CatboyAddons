@@ -1,0 +1,10 @@
+{
+  "minVersion": "0.7",
+  "compatibilityLevel": "JAVA_8",
+  "package": "im.ghosty.catboyaddons.mixin",
+  "refmap": "mixins.${modid}.refmap.json",
+  "client": [
+    "EntityPlayerMixin",
+    "ModListMixin"
+  ]
+}
