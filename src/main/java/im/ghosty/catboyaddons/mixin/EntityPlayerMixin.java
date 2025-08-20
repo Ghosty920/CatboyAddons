@@ -34,15 +34,14 @@ public class EntityPlayerMixin {
 		if (!((EntityPlayer) (Object) this instanceof EntityPlayerSP)) return;
 		if (itemInUse == null || inventory == null) return;
 		ItemStack item = inventory.getCurrentItem();
-		if (item == null || !(item.getItem() instanceof ItemBow)) return;
-		if (!catBoyAddons$isShortBow(item)) return;
+		if (!catboyAddons$isShortbow(item)) return;
 		itemInUse = null;
 		itemInUseCount = 0;
 	}
 
 	@Unique
-	private boolean catBoyAddons$isShortBow(ItemStack item) {
-        if (item == null || !item.hasTagCompound()) return false;
+	private boolean catboyAddons$isShortbow(ItemStack item) {
+        if (item == null || !(item.getItem() instanceof ItemBow) || !item.hasTagCompound()) return false;
 
         NBTTagCompound display = item.getTagCompound().getCompoundTag("display");
         if (!display.hasKey("Lore", Constants.NBT.TAG_LIST)) return false;
