@@ -4,7 +4,8 @@ import cc.polyfrost.oneconfig.events.EventManager
 import cc.polyfrost.oneconfig.utils.commands.CommandManager
 import im.ghosty.catboyaddons.commands.MainCommand
 import im.ghosty.catboyaddons.features.MessageLogger
-import im.ghosty.catboyaddons.features.P3AutoLeap
+import im.ghosty.catboyaddons.features.f7.CoreClip
+import im.ghosty.catboyaddons.features.f7.P3AutoLeap
 import im.ghosty.catboyaddons.utils.LeapHelper
 import im.ghosty.catboyaddons.utils.ScoreboardUtils
 import im.ghosty.catboyaddons.utils.StatusUtils
@@ -27,14 +28,14 @@ object CatboyAddons {
 
     @Mod.EventHandler
     fun initialize(event: FMLInitializationEvent) {
-        Config.initialize()
+        Config.init();
 
         listOf(
             StatusUtils, ScoreboardUtils,
         ).forEach(MinecraftForge.EVENT_BUS::register) // Forge
         listOf(
-            ScoreboardUtils, LeapHelper,
-            MessageLogger, P3AutoLeap,
+            StatusUtils, ScoreboardUtils, LeapHelper,
+            MessageLogger, CoreClip, P3AutoLeap,
         ).forEach(EventManager.INSTANCE::register) // OneConfig
 
         CommandManager.INSTANCE.registerCommand(MainCommand)

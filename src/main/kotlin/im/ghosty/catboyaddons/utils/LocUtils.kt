@@ -2,8 +2,14 @@ package im.ghosty.catboyaddons.utils
 
 import net.minecraft.util.BlockPos
 import net.minecraft.util.Vec3
+import im.ghosty.catboyaddons.CatboyAddons.mc
 
 object LocUtils {
+
+    fun getPlayerLoc(): Vec3? {
+        if(mc.thePlayer === null) return null
+        return Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ)
+    }
 
     fun isInsideBox(pos: Vec3, a: Vec3, b: Vec3): Boolean {
         val minX = minOf(a.xCoord, b.xCoord)

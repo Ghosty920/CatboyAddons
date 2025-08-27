@@ -1,10 +1,13 @@
 package im.ghosty.catboyaddons.utils
 
+import cc.polyfrost.oneconfig.events.event.Stage
+import cc.polyfrost.oneconfig.events.event.TickEvent
+import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import im.ghosty.catboyaddons.CatboyAddons.mc
+import im.ghosty.catboyaddons.Config
 import net.minecraft.util.BlockPos
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent
 
@@ -15,6 +18,7 @@ object StatusUtils {
     var inDungeon = false
     var dungeonFloor: String? = null
     var dungeonFloorNumber: Int? = null
+
     @JvmStatic
     val dungeonIsMM get() = dungeonFloor?.startsWith("M") ?: false
     var dungeonInBoss = false
@@ -25,11 +29,24 @@ object StatusUtils {
 
     private var tickTimer = 0
 
-    @SubscribeEvent
-    fun onTick(event: TickEvent.ClientTickEvent) {
-        if(event.phase != TickEvent.Phase.START) return
+    @Subscribe
+    fun onTick(event: TickEvent) {
+        if (event.stage != Stage.START) return
         if ((tickTimer++) != 10) return
         tickTimer = 0
+
+        if (Config.devStatusLiar) {
+            // shh, don't tell anyone, but that's a lie!!
+            onHypixel = true;
+            inSkyblock = true;
+            inDungeon = true;
+            dungeonFloor = "F7";
+            dungeonFloorNumber = 7;
+            dungeonInBoss = isInBossRoom()
+            dungeonF7Phase = getPhase()
+            dungeonF7SectionP3 = getP3Section()
+            return;
+        }
 
         inSkyblock = onHypixel && mc.theWorld?.scoreboard?.getObjectiveInDisplaySlot(1)?.name == "SBScoreboard"
         if (inSkyblock) {
@@ -50,7 +67,7 @@ object StatusUtils {
 
     private fun updateDungeonStatus() = ScoreboardUtils.sidebarLines.find {
         ScoreboardUtils.cleanSB(it).run {
-            contains("The Catacombs (") && ! contains("Queue")
+            contains("The Catacombs (") && !contains("Queue")
         }
     }?.run {
         inDungeon = true
@@ -59,13 +76,13 @@ object StatusUtils {
     }
 
     private val bossRoomCorners = mapOf(
-        7 to Pair(BlockPos(- 8, 0, - 8), BlockPos(134, 254, 147)),
-        6 to Pair(BlockPos(- 40, 51, - 8), BlockPos(22, 110, 134)),
-        5 to Pair(BlockPos(- 40, 112, - 8), BlockPos(50, 53, 118)),
-        4 to Pair(BlockPos(- 40, 112, - 40), BlockPos(50, 53, 47)),
-        3 to Pair(BlockPos(- 40, 118, - 40), BlockPos(42, 64, 31)),
-        2 to Pair(BlockPos(- 40, 99, - 40), BlockPos(24, 54, 59)),
-        1 to Pair(BlockPos(- 14, 55, 49), BlockPos(- 72, 146, - 40))
+        7 to Pair(BlockPos(-8, 0, -8), BlockPos(134, 254, 147)),
+        6 to Pair(BlockPos(-40, 51, -8), BlockPos(22, 110, 134)),
+        5 to Pair(BlockPos(-40, 112, -8), BlockPos(50, 53, 118)),
+        4 to Pair(BlockPos(-40, 112, -40), BlockPos(50, 53, 47)),
+        3 to Pair(BlockPos(-40, 118, -40), BlockPos(42, 64, 31)),
+        2 to Pair(BlockPos(-40, 99, -40), BlockPos(24, 54, 59)),
+        1 to Pair(BlockPos(-14, 55, 49), BlockPos(-72, 146, -40))
     )
 
     private fun isInBossRoom(): Boolean {
@@ -91,8 +108,8 @@ object StatusUtils {
     private val P3Sections = listOf(
         Pair(BlockPos(90, 158, 123), BlockPos(111, 105, 32)),  //  1
         Pair(BlockPos(16, 158, 122), BlockPos(111, 105, 143)), //  2
-        Pair(BlockPos(19, 158, 48), BlockPos(- 3, 106, 142)),  //  3
-        Pair(BlockPos(91, 158, 50), BlockPos(- 3, 106, 30))    //  4
+        Pair(BlockPos(19, 158, 48), BlockPos(-3, 106, 142)),  //  3
+        Pair(BlockPos(91, 158, 50), BlockPos(-3, 106, 30))    //  4
     )
 
     private fun getP3Section(): Int? {
@@ -107,7 +124,6 @@ object StatusUtils {
 
         return null
     }
-
 
 
     @SubscribeEvent
