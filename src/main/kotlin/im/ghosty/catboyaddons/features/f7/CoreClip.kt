@@ -6,6 +6,7 @@ import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import im.ghosty.catboyaddons.CatboyAddons.mc
 import im.ghosty.catboyaddons.Config
 import im.ghosty.catboyaddons.utils.LocUtils
+import im.ghosty.catboyaddons.utils.MovementHandler
 import im.ghosty.catboyaddons.utils.StatusUtils
 
 object CoreClip {
@@ -22,11 +23,19 @@ object CoreClip {
 
         val distance = loc.zCoord - 54.5
         if(distance in 0.8..0.80001) {
+            MovementHandler.stop()
             mc.thePlayer.setPosition(loc.xCoord, loc.yCoord, 55.2376)
-            mc.addScheduledTask { mc.thePlayer.setPosition(loc.xCoord, loc.yCoord, 53.699) }
+            mc.addScheduledTask {
+                MovementHandler.restore()
+                mc.thePlayer.setPosition(loc.xCoord, loc.yCoord, 53.699)
+            }
         } else if(distance in -0.80001..-0.8) {
+            MovementHandler.stop()
             mc.thePlayer.setPosition(loc.xCoord, loc.yCoord, 53.7624)
-            mc.addScheduledTask { mc.thePlayer.setPosition(loc.xCoord, loc.yCoord, 55.301) }
+            mc.addScheduledTask {
+                MovementHandler.restore()
+                mc.thePlayer.setPosition(loc.xCoord, loc.yCoord, 55.301)
+            }
         }
     }
 

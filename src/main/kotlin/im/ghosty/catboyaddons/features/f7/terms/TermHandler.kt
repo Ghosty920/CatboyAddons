@@ -3,6 +3,7 @@ package im.ghosty.catboyaddons.features.f7.terms
 import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
 import cc.polyfrost.oneconfig.events.event.WorldLoadEvent
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
+import im.ghosty.catboyaddons.Config
 import im.ghosty.catboyaddons.utils.Utils.removeFormatting
 import im.ghosty.catboyaddons.utils.events.InventoryCloseEvent
 import net.minecraft.item.ItemStack
@@ -12,26 +13,35 @@ import java.util.LinkedList
 
 object TermHandler {
 
-    val cancelEvents = false
-
     var inTerminal = false
     var windowId = -1
     var windowTitle = ""
     var termType: TerminalTypes? = null
     var openTime = 0L
 
+    var invWalk = false
     var receivedAll = false
+    @JvmField
     var items: ArrayList<ItemData>? = null
+    @JvmField
     var solution: LinkedList<ItemData>? = null
+    var solutionSize = 0
 
     @Subscribe(priority = 1000069)
     fun onPacketReceive(event: ReceivePacketEvent) {
         if (event.packet is S2DPacketOpenWindow) {
             val packet = event.packet as S2DPacketOpenWindow;
+
+            if(inTerminal) {
+                windowId = packet.windowId
+                if(invWalk) event.isCancelled = true
+                return
+            }
+
             windowTitle = packet.windowTitle.unformattedText.removeFormatting()
             termType = TerminalTypes.entries.find { it.regex.matches(windowTitle) }
 
-            if (termType == null) {
+            if (termType == null || termType == TerminalTypes.MELODY) { // TODO implement melody
                 reset()
                 return
             }
@@ -43,15 +53,20 @@ object TermHandler {
             items = ArrayList(termType!!.rows * 9)
             solution = null
 
-            if (cancelEvents) event.isCancelled = true
+            invWalk = !Config.secure && (when(termType!!) {
+                //TerminalTypes.MELODY -> Config.autoTermsInvWalkMelody
+                else -> Config.autoTermsInvWalk
+            })
+            if (invWalk) event.isCancelled = true
+
             return
         }
 
         if (event.packet is S2FPacketSetSlot) {
-            if (!inTerminal) return
+            if (!inTerminal || receivedAll) return
             val packet = event.packet as S2FPacketSetSlot
             if (packet.func_149175_c() != windowId) return
-            if (packet.func_149173_d() > termType!!.rows * 9 - 1) {
+            if (packet.func_149173_d() == termType!!.rows * 9 - 1) {
                 receivedAll = true
                 return
             }
@@ -60,12 +75,11 @@ object TermHandler {
                 ItemData(
                     packet.func_149174_e(),
                     packet.func_149173_d(),
-                    packet.func_149175_c(),
                     false
                 )
             )
 
-            if (cancelEvents) event.isCancelled = true
+            if (invWalk) event.isCancelled = true
             return
         }
 
@@ -90,6 +104,7 @@ object TermHandler {
             else -> null
         }
         if(soluce != null) solution = LinkedList(soluce)
+        solutionSize = soluce?.size ?: -1
         return solution
     }
 
@@ -109,22 +124,24 @@ object TermHandler {
         windowTitle = ""
         termType = null
         openTime = 0L
+        invWalk = false
         receivedAll = false
         items = null
         solution = null
+        solutionSize = -1
     }
 
 }
 
-class ItemData(val item: ItemStack, val slot: Int, val windowId: Int, var rightClick: Boolean?) {
-    fun cloneWithRC(): ItemData = ItemData(item, slot, windowId, true)
+data class ItemData(val item: ItemStack, val slot: Int, var rightClick: Boolean?) {
+    fun cloneWithRC(): ItemData = ItemData(item, slot, true)
 }
 
-enum class TerminalTypes(val regex: Regex, val rows: Int) {
-    NUMBERS(Regex("^Click in order!$"), 4),
-    RUBIX(Regex("^Change all to same color!$"), 5),
-    REDGREEN(Regex("^Correct all the panes!$"), 5),
-    STARTSWITH(Regex("^What starts with: '(.+?)'\\?$"), 5),
-    COLORS(Regex("^Select all the (.+?) items!$"), 6),
-    MELODY(Regex("^Click the button on time!$"), 5) // TODO implement melody solver
+enum class TerminalTypes(val regex: Regex, val rows: Int, val display: String) {
+    NUMBERS(Regex("^Click in order!$"), 4, "§dNumbers"),
+    RUBIX(Regex("^Change all to same color!$"), 5, "§9Rubix"),
+    REDGREEN(Regex("^Correct all the panes!$"), 5, "§cRed §aGreen"),
+    STARTSWITH(Regex("^What starts with: '(.+?)'\\?$"), 5, "§aStarts with"),
+    COLORS(Regex("^Select all the (.+?) items!$"), 6, "§eColors"),
+    MELODY(Regex("^Click the button on time!$"), 6, "§6Melody") // TODO implement melody solver
 }

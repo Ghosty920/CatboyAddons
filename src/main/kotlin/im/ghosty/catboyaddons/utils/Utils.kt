@@ -2,11 +2,14 @@ package im.ghosty.catboyaddons.utils
 
 import im.ghosty.catboyaddons.CatboyAddons
 import im.ghosty.catboyaddons.CatboyAddons.mc
+import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.EnumChatFormatting
 import org.apache.logging.log4j.LogManager
 
 object Utils {
+
+    val scaledResolution = ScaledResolution(mc)
 
     fun String.remove(vararg patterns: String): String = patterns.fold(this) { acc, s -> acc.replace(s, "") }
     fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, r -> acc.replace(r, "") }

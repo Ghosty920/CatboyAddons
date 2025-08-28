@@ -23,52 +23,58 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
 
 
     @JvmField
-    @Switch(name = "Core Clip", description = "Lets you go through the gold door (core entrance) without any effort", size = 2, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Switch(name = "Core Clip", description = "Lets you go through the gold door (core entrance) without any effort", size = 2, category = "F7", subcategory = "Phase 3")
     var coreClip = false
 
-    @Info(text = "AutoTerms is at your own risk for the moment", type = InfoType.ERROR, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Info(text = "AutoTerms is at your own risk for the moment", type = InfoType.ERROR, category = "F7", subcategory = "Phase 3 - Auto Terms")
     private var _noteAutoTerms = false
     @JvmField
-    @Switch(name = "AutoTerms", description = "Automatically do terminals in", size = 2, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Switch(name = "AutoTerms", description = "Automatically do terminals in", size = 2, category = "F7", subcategory = "Phase 3 - Auto Terms")
     var autoTerms = false
     @JvmField
-    @Slider(name = "Click Delay", description = "The delay to wait between each click", min = 50f, max = 500f)
+    @Slider(name = "Click Delay", description = "The delay to wait between each click", min = 50f, max = 500f, category = "F7", subcategory = "Phase 3 - Auto Terms")
     var autoTermsClickDelay = 175
     @JvmField
-    @Slider(name = "First Click Delay", description = "The delay to wait before the very first click", min = 50f, max = 500f)
-    var autoTermsFirstClickDelay = 175
+    @Slider(name = "First Click Delay", description = "The delay to wait before the very first click", min = 100f, max = 800f, category = "F7", subcategory = "Phase 3 - Auto Terms")
+    var autoTermsFirstClickDelay = 450
     @JvmField
-    @Dropdown(name = "Click Order", description = "The way the click order will be calculated", options = ["Human-like/Distance", "Random", "Linear"], size = 1, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Dropdown(name = "Click Order", description = "The way the click order will be calculated", options = ["Human-like/Distance", "Random", "Linear"], size = 1, category = "F7", subcategory = "Phase 3 - Auto Terms")
     var autoTermsClickOrder = 0
     @JvmField
-    @Switch(name = "Reverse Order", description = "The same calculated order, but in reverse to add randomness", size = 1, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Switch(name = "Reverse Order", description = "The same calculated order, but in reverse to add randomness", size = 1, category = "F7", subcategory = "Phase 3 - Auto Terms")
     var autoTermsReverseOrder = false
     @JvmField
-    @Slider(name = "Break Threshold", description = "After how much time it assumes that you lagged or some issue happened", min = 300f, max = 1500f, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Slider(name = "Break Threshold", description = "After how much time it assumes that you lagged or some issue happened", min = 500f, max = 3000f, category = "F7", subcategory = "Phase 3 - Auto Terms")
     var autoTermsBreakThreshold = 1000
+    @JvmField
+    @Checkbox(name = "InvWalk", description = "Removes the inventory to let you walk freely around", size = 1, category = "F7", subcategory = "Phase 3 - Auto Terms")
+    var autoTermsInvWalk = false
+    /*@JvmField
+    @Checkbox(name = "InvWalk Melody", description = "Removes the melody inventory to let you walk freely around", size = 1, category = "F7", subcategory = "Phase 3 - Auto Terms")
+    var autoTermsInvWalkMelody = false*/
 
-    @Info(text = "AutoLeap works by automatically finding the best person. You cannot specify a class/person.", type = InfoType.WARNING, size = 2, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Info(text = "AutoLeap works by automatically finding the best person. You cannot specify a class/person.", type = InfoType.WARNING, size = 2, category = "F7", subcategory = "Phase 3 - Auto Leap")
     private var _noteAutoLeap = false
     @JvmField
-    @Switch(name = "Toggle P3 AutoLeap", description = "Automatically leap to the best person possible at the right timing", size = 2, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Switch(name = "Toggle P3 AutoLeap", description = "Automatically leap to the best person possible at the right timing", size = 2, category = "F7", subcategory = "Phase 3 - Auto Leap")
     var p3AutoLeap = false
     @JvmField
-    @Checkbox(name = "Healer -> I4", description = "Leap to whoever is doing I4 (at first Storm crush)", size = 1, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Checkbox(name = "Healer -> I4", description = "Leap to whoever is doing I4 (at first Storm crush)", size = 1, category = "F7", subcategory = "Phase 3 - Auto Leap")
     var p3AutoLeapI4 = false
     @JvmField
-    @Checkbox(name = "Simon Says Camp", description = "Leap to whoever is at SSC (when Storm is done)", size = 1, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Checkbox(name = "Simon Says Camp", description = "Leap to whoever is at SSC (when Storm is done)", size = 1, category = "F7", subcategory = "Phase 3 - Auto Leap")
     var p3AutoLeapSSC = true
     @JvmField
-    @Checkbox(name = "Early Entry 2", description = "Leap to whoever is doing ee2 (at 7/7)", size = 1, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Checkbox(name = "Early Entry 2", description = "Leap to whoever is doing ee2 (at 7/7)", size = 1, category = "F7", subcategory = "Phase 3 - Auto Leap")
     var p3AutoLeapEE2 = true
     @JvmField
-    @Checkbox(name = "Early Entry 3", description = "Leap to whoever is doing ee3 (at 8/8)", size = 1, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Checkbox(name = "Early Entry 3", description = "Leap to whoever is doing ee3 (at 8/8)", size = 1, category = "F7", subcategory = "Phase 3 - Auto Leap")
     var p3AutoLeapEE3 = true
     @JvmField
-    @Checkbox(name = "Early Entry 4 / Core", description = "Leap to whoever is doing core/ee4 (at 7/7)", size = 1, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Checkbox(name = "Early Entry 4 / Core", description = "Leap to whoever is doing core/ee4 (at 7/7)", size = 1, category = "F7", subcategory = "Phase 3 - Auto Leap")
     var p3AutoLeapEE4 = true
     @JvmField
-    @Checkbox(name = "Tunnel", description = "Leap to whoever is in the tunnel before Maxor angy 3:", size = 1, category = "F7", subcategory = "Phase 3 - Goldor")
+    @Checkbox(name = "Tunnel", description = "Leap to whoever is in the tunnel before Maxor angy 3:", size = 1, category = "F7", subcategory = "Phase 3 - Auto Leap")
     var p3AutoLeapTunnel = true
 
     @JvmField
@@ -82,6 +88,16 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
         initialize()
 
         notSecure("coreClip")
+        notSecure("autoTermsInvWalk")
+        notSecure("autoTermsInvWalkMelody")
+
+        addDependency("autoTermsClickDelay", "autoTerms")
+        addDependency("autoTermsFirstClickDelay", "autoTerms")
+        addDependency("autoTermsClickOrder", "autoTerms")
+        addDependency("autoTermsReverseDelay", "autoTerms")
+        addDependency("autoTermsBreakThreshold", "autoTerms")
+        addDependency("autoTermsInvWalk", "autoTerms")
+        addDependency("autoTermsInvWalkMelody", "autoTerms")
 
         addDependency("p3AutoLeapI4", "p3AutoLeap")
         addDependency("p3AutoLeapSSC", "p3AutoLeap")

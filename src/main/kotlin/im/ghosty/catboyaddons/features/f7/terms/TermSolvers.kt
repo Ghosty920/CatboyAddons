@@ -2,6 +2,7 @@ package im.ghosty.catboyaddons.features.f7.terms
 
 import im.ghosty.catboyaddons.utils.Utils.removeFormatting
 import net.minecraft.item.Item
+import kotlin.math.abs
 import kotlin.math.min
 
 interface TermSolver {
@@ -25,20 +26,20 @@ class RubixSolver : TermSolver {
 
     override fun solve(itemList: ArrayList<ItemData>): List<ItemData> {
         val solution = arrayListOf<ItemData>()
-        val items = itemList.filter { it.item.metadata != 15 && Item.getIdFromItem(it.item.item) == 160 }
+        val items = setClickOrder(itemList.filter { it.item.metadata != 15 && Item.getIdFromItem(it.item.item) == 160 })
         var bestIndex = -1
-        var minTotal = 1000
+        var bestClicks = 1000
 
         for (targetIndex in 0..4) {
             var totalClicks = 0
             for (i in 0..<items.size) {
                 val currIndex = order.indexOf(items[i].item.metadata)
-                val leftClicks = (targetIndex - currIndex + order.size) % order.size
-                val rightClicks = (currIndex - targetIndex + order.size) % order.size
-                totalClicks += min(leftClicks, rightClicks)
+                if(currIndex == targetIndex) continue
+                val clicks = (bestIndex - currIndex + order.size) % order.size
+                totalClicks += min(clicks, (5 - clicks) % order.size)
             }
-            if(totalClicks < minTotal) {
-                minTotal = totalClicks
+            if(totalClicks < bestClicks) {
+                bestClicks = totalClicks
                 bestIndex = targetIndex
             }
         }
@@ -46,15 +47,17 @@ class RubixSolver : TermSolver {
         for(i in 0..<items.size) {
             val item = items[i]
             val currIndex = order.indexOf(item.item.metadata)
+
             val leftClicks = (bestIndex - currIndex + order.size) % order.size
-            val rightClicks = (currIndex - bestIndex + order.size) % order.size
+            val rightClicks = (5 - leftClicks) % order.size
 
             if(leftClicks <= rightClicks) {
                 for(j in 1..leftClicks)
                     solution.add(item)
             } else {
-                for(j in 1..leftClicks)
-                    solution.add(item.cloneWithRC())
+                val itemRC = item.cloneWithRC()
+                for(j in 1..rightClicks)
+                    solution.add(itemRC)
             }
         }
 
@@ -74,7 +77,7 @@ class RedGreenSolver : TermSolver {
 class StartsWithSolver(val prefix: String) : TermSolver {
 
     override fun solve(itemList: ArrayList<ItemData>): List<ItemData> {
-        return setClickOrder(itemList.filter { !it.item.isItemEnchanted && it.item.displayName.startsWith(prefix, true) })
+        return setClickOrder(itemList.filter { !it.item.isItemEnchanted && it.item.displayName.removeFormatting().startsWith(prefix, true) })
     }
 
 }
@@ -99,7 +102,7 @@ class ColorsSolver(val color: String) : TermSolver {
                 if (it.item.isItemEnchanted) return@filter false
                 var name = it.item.displayName.removeFormatting().lowercase()
                 colorReplacements.forEach { (from, to) -> name = name.replace(Regex("^$from"), to) }
-                return@filter name.startsWith(color)
+                return@filter name.startsWith(color, true)
             }
         )
     }

@@ -86,7 +86,7 @@ object StatusUtils {
     )
 
     private fun isInBossRoom(): Boolean {
-        val playerPos = mc.thePlayer.position ?: return false
+        val playerPos = mc.thePlayer?.position ?: return false
         val floor = dungeonFloorNumber ?: return false
         val corners = bossRoomCorners[floor] ?: return false
         return LocUtils.isInsideBox(playerPos, corners.first, corners.second)

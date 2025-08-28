@@ -1,39 +1,44 @@
 package im.ghosty.catboyaddons.utils
 
-import cc.polyfrost.oneconfig.utils.dsl.mc
-import net.minecraft.client.settings.KeyBinding
-import org.lwjgl.input.Keyboard
-
 object MovementHandler {
 
+    @JvmStatic
+    var allowForward = true
+    @JvmStatic
+    var allowBack = true
+    @JvmStatic
+    var allowLeft = true
+    @JvmStatic
+    var allowRight = true
+    @JvmStatic
+    var allowJump = true
+    @JvmStatic
+    var allowSneak = true
+
     fun stop() {
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.keyCode, false)
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.keyCode, false)
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.keyCode, false)
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.keyCode, false)
+        allowForward = false
+        allowBack = false
+        allowLeft = false
+        allowRight = false
     }
 
     fun stopAll() {
         stop()
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.keyCode, false)
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.keyCode, false)
+        allowJump = false
+        allowSneak = false
     }
 
     fun restore() {
-        restoreKey(mc.gameSettings.keyBindForward.keyCode)
-        restoreKey(mc.gameSettings.keyBindBack.keyCode)
-        restoreKey(mc.gameSettings.keyBindLeft.keyCode)
-        restoreKey(mc.gameSettings.keyBindRight.keyCode)
+        allowForward = true
+        allowBack = true
+        allowLeft = true
+        allowRight = true
     }
 
     fun restoreAll() {
         restore()
-        restoreKey(mc.gameSettings.keyBindJump.keyCode)
-        restoreKey(mc.gameSettings.keyBindSneak.keyCode)
-    }
-
-    private fun restoreKey(key: Int) {
-        KeyBinding.setKeyBindState(key, Keyboard.isKeyDown(key))
+        allowJump = true
+        allowSneak = true
     }
 
 }
