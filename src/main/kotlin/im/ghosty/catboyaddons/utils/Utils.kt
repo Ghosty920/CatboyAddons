@@ -21,4 +21,7 @@ object Utils {
     fun sendToChat(message: String) = mc.ingameGUI?.chatGUI?.printChatMessage(ChatComponentText(CatboyAddons.PREFIX + message))
     fun sendToConsole(message: String) = println("[Catboy] $message")
 
+    fun <E> ArrayList<E>.shift(): E = this.removeAt(0)
+    fun <E> ArrayList<E>.pop(): E = this.removeAt(this.size - 1)
+
 }

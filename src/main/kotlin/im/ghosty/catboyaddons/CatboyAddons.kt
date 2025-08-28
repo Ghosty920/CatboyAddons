@@ -9,6 +9,7 @@ import im.ghosty.catboyaddons.features.f7.P3AutoLeap
 import im.ghosty.catboyaddons.utils.LeapHelper
 import im.ghosty.catboyaddons.utils.ScoreboardUtils
 import im.ghosty.catboyaddons.utils.StatusUtils
+import im.ghosty.catboyaddons.utils.events.EventHandler
 import net.minecraft.client.Minecraft
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
@@ -35,7 +36,7 @@ object CatboyAddons {
         ).forEach(MinecraftForge.EVENT_BUS::register) // Forge
         listOf(
             StatusUtils, ScoreboardUtils, LeapHelper,
-            MessageLogger, CoreClip, P3AutoLeap,
+            MessageLogger, CoreClip, P3AutoLeap, EventHandler
         ).forEach(EventManager.INSTANCE::register) // OneConfig
 
         CommandManager.INSTANCE.registerCommand(MainCommand)

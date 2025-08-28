@@ -108,8 +108,9 @@ object StatusUtils {
     private val P3Sections = listOf(
         Pair(BlockPos(90, 158, 123), BlockPos(111, 105, 32)),  //  1
         Pair(BlockPos(16, 158, 122), BlockPos(111, 105, 143)), //  2
-        Pair(BlockPos(19, 158, 48), BlockPos(-3, 106, 142)),  //  3
-        Pair(BlockPos(91, 158, 50), BlockPos(-3, 106, 30))    //  4
+        Pair(BlockPos(19, 158, 48), BlockPos(-3, 106, 142)),   //  3
+        Pair(BlockPos(91, 158, 53), BlockPos(-3, 106, 30)),    //  4
+        Pair(BlockPos(39, 158, 55), BlockPos(69, 110, 118))    // Core
     )
 
     private fun getP3Section(): Int? {
