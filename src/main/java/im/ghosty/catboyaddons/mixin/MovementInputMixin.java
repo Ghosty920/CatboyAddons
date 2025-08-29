@@ -19,32 +19,32 @@ public class MovementInputMixin {
 	
 	@Redirect(method = "updatePlayerMoveState", at = @At(ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isKeyDown()Z"))
 	private boolean forward(KeyBinding key) {
-		return MovementHandler.getAllowForward() && key.isKeyDown();
+		return MovementHandler.canMove() && key.isKeyDown();
 	}
 	
 	@Redirect(method = "updatePlayerMoveState", at = @At(ordinal = 1, value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isKeyDown()Z"))
 	private boolean back(KeyBinding key) {
-		return MovementHandler.getAllowBack() && key.isKeyDown();
+		return MovementHandler.canMove() && key.isKeyDown();
 	}
 	
 	@Redirect(method = "updatePlayerMoveState", at = @At(ordinal = 2, value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isKeyDown()Z"))
 	private boolean left(KeyBinding key) {
-		return MovementHandler.getAllowLeft() && key.isKeyDown();
+		return MovementHandler.canMove() && key.isKeyDown();
 	}
 	
 	@Redirect(method = "updatePlayerMoveState", at = @At(ordinal = 3, value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isKeyDown()Z"))
 	private boolean right(KeyBinding key) {
-		return MovementHandler.getAllowRight() && key.isKeyDown();
+		return MovementHandler.canMove() && key.isKeyDown();
 	}
 	
 	@Redirect(method = "updatePlayerMoveState", at = @At(ordinal = 4, value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isKeyDown()Z"))
 	private boolean jump(KeyBinding key) {
-		return MovementHandler.getAllowLeft() && key.isKeyDown();
+		return MovementHandler.canJump() && key.isKeyDown();
 	}
 	
 	@Redirect(method = "updatePlayerMoveState", at = @At(ordinal = 5, value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isKeyDown()Z"))
 	private boolean sneak(KeyBinding key) {
-		return MovementHandler.getAllowSneak() && key.isKeyDown();
+		return MovementHandler.canSneak() && key.isKeyDown();
 	}
 	
 }

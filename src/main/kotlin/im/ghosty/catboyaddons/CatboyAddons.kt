@@ -9,6 +9,7 @@ import im.ghosty.catboyaddons.features.f7.P3AutoLeap
 import im.ghosty.catboyaddons.features.f7.terms.AutoTerms
 import im.ghosty.catboyaddons.features.f7.terms.TermHandler
 import im.ghosty.catboyaddons.utils.LeapHelper
+import im.ghosty.catboyaddons.utils.Scheduler
 import im.ghosty.catboyaddons.utils.ScoreboardUtils
 import im.ghosty.catboyaddons.utils.StatusUtils
 import im.ghosty.catboyaddons.utils.events.EventHandler
@@ -34,7 +35,7 @@ object CatboyAddons {
         Config.init();
 
         listOf(
-            StatusUtils, ScoreboardUtils,
+            StatusUtils, ScoreboardUtils, Scheduler
         ).forEach(MinecraftForge.EVENT_BUS::register) // Forge
         listOf(
             StatusUtils, ScoreboardUtils, LeapHelper,

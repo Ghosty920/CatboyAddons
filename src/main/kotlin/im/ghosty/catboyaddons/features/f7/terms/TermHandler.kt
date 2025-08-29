@@ -40,11 +40,7 @@ object TermHandler {
 
             windowTitle = packet.windowTitle.unformattedText.removeFormatting()
             termType = TerminalTypes.entries.find { it.regex.matches(windowTitle) }
-
-            if (termType == null || termType == TerminalTypes.MELODY) { // TODO implement melody
-                reset()
-                return
-            }
+            if (termType == null) return
 
             inTerminal = true
             windowId = packet.windowId
@@ -54,7 +50,7 @@ object TermHandler {
             solution = null
 
             invWalk = !Config.secure && (when(termType!!) {
-                //TerminalTypes.MELODY -> Config.autoTermsInvWalkMelody
+                TerminalTypes.MELODY -> Config.autoTermsInvWalkMelody
                 else -> Config.autoTermsInvWalk
             })
             if (invWalk) event.isCancelled = true
@@ -143,5 +139,5 @@ enum class TerminalTypes(val regex: Regex, val rows: Int, val display: String) {
     REDGREEN(Regex("^Correct all the panes!$"), 5, "§cRed §aGreen"),
     STARTSWITH(Regex("^What starts with: '(.+?)'\\?$"), 5, "§aStarts with"),
     COLORS(Regex("^Select all the (.+?) items!$"), 6, "§eColors"),
-    MELODY(Regex("^Click the button on time!$"), 6, "§6Melody") // TODO implement melody solver
+    MELODY(Regex("^Click the button on time!$"), 6, "§6Melody")
 }

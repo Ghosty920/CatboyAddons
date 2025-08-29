@@ -49,9 +49,12 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
     @JvmField
     @Checkbox(name = "InvWalk", description = "Removes the inventory to let you walk freely around", size = 1, category = "F7", subcategory = "Phase 3 - Auto Terms")
     var autoTermsInvWalk = false
-    /*@JvmField
+    @JvmField
     @Checkbox(name = "InvWalk Melody", description = "Removes the melody inventory to let you walk freely around", size = 1, category = "F7", subcategory = "Phase 3 - Auto Terms")
-    var autoTermsInvWalkMelody = false*/
+    var autoTermsInvWalkMelody = false
+    @JvmField
+    @Slider(name = "InvWalk Melody Safe Delay", description = "Prevents you from moving after clicking in melody to not get sent to limbo", min = 50f, max = 1000f, category = "F7", subcategory = "Phase 3 - Auto Terms")
+    var autoTermsInvWalkMelodySafe = 300
 
     @Info(text = "AutoLeap works by automatically finding the best person. You cannot specify a class/person.", type = InfoType.WARNING, size = 2, category = "F7", subcategory = "Phase 3 - Auto Leap")
     private var _noteAutoLeap = false
@@ -90,6 +93,7 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
         notSecure("coreClip")
         notSecure("autoTermsInvWalk")
         notSecure("autoTermsInvWalkMelody")
+        notSecure("autoTermsInvWalkMelodySafe")
 
         addDependency("autoTermsClickDelay", "autoTerms")
         addDependency("autoTermsFirstClickDelay", "autoTerms")
@@ -98,6 +102,8 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
         addDependency("autoTermsBreakThreshold", "autoTerms")
         addDependency("autoTermsInvWalk", "autoTerms")
         addDependency("autoTermsInvWalkMelody", "autoTerms")
+        addDependency("autoTermsInvWalkMelodySafe", "autoTerms")
+        addDependency("autoTermsInvWalkMelodySafe", "autoTermsInvWalkMelody")
 
         addDependency("p3AutoLeapI4", "p3AutoLeap")
         addDependency("p3AutoLeapSSC", "p3AutoLeap")

@@ -2,43 +2,45 @@ package im.ghosty.catboyaddons.utils
 
 object MovementHandler {
 
-    @JvmStatic
-    var allowForward = true
-    @JvmStatic
-    var allowBack = true
-    @JvmStatic
-    var allowLeft = true
-    @JvmStatic
-    var allowRight = true
-    @JvmStatic
-    var allowJump = true
-    @JvmStatic
-    var allowSneak = true
+    private var stopMovement = 0;
+    private var stopJump = 0;
+    private var stopSneak = 0;
 
-    fun stop() {
-        allowForward = false
-        allowBack = false
-        allowLeft = false
-        allowRight = false
-    }
+    @JvmStatic
+    fun canMove() = stopMovement == 0
+
+    @JvmStatic
+    fun canJump() = stopJump == 0
+
+    @JvmStatic
+    fun canSneak() = stopSneak == 0
+
+    fun stop() = stopMovement++
+    fun stopJump() = stopJump++
+    fun stopSneak() = stopSneak++
 
     fun stopAll() {
         stop()
-        allowJump = false
-        allowSneak = false
+        stopJump()
+        stopSneak()
     }
 
     fun restore() {
-        allowForward = true
-        allowBack = true
-        allowLeft = true
-        allowRight = true
+        stopMovement = (stopMovement - 1).coerceAtLeast(0)
+    }
+
+    fun restoreJump() {
+        stopJump = (stopJump - 1).coerceAtLeast(0)
+    }
+
+    fun restoreSneak() {
+        stopSneak = (stopSneak - 1).coerceAtLeast(0)
     }
 
     fun restoreAll() {
         restore()
-        allowJump = true
-        allowSneak = true
+        restoreJump()
+        restoreSneak()
     }
 
 }
