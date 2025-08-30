@@ -18,6 +18,9 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
     var secure = true
 
     @JvmField
+    @Switch(name = "Auto Sprint", description = "Guess! :)", size = 2, category = "General", subcategory = "Features")
+    var autoSprint = false
+    @JvmField
     @Switch(name = "Shortbow Pull Fix", description = "Fixes shortbows pulling back when you have an arrow in your inventory", size = 2, category = "General", subcategory = "Features")
     var shortbowPullFix = false
 
