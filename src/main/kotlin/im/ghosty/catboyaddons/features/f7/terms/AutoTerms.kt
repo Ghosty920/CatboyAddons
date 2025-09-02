@@ -1,5 +1,6 @@
 package im.ghosty.catboyaddons.features.f7.terms
 
+import cc.polyfrost.oneconfig.events.event.HudRenderEvent
 import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
 import cc.polyfrost.oneconfig.events.event.RenderEvent
 import cc.polyfrost.oneconfig.events.event.SendPacketEvent
@@ -120,8 +121,9 @@ object AutoTerms {
     }
 
     @Subscribe
-    fun onRender(event: RenderEvent) {
-        if (event.stage !== Stage.END) return
+    fun onRender(event: HudRenderEvent) {
+        if (!Config.autoTerms) return
+        if (StatusUtils.dungeonF7Phase != 3) return
         if (!TermHandler.invWalk) return
 
         val solutionSize = if (TermHandler.termType !== TerminalTypes.MELODY) TermHandler.solutionSize else 4
