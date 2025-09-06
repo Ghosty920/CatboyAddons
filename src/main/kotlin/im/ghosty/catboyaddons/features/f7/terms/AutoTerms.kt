@@ -29,6 +29,7 @@ object AutoTerms {
 
     var melodyStep = 0
     var melodyCorrect = -1
+    var melodyInvWalkTimer = MSTimer(0)
 
     @Subscribe
     fun onUpdate(event: RenderEvent) {
@@ -114,7 +115,9 @@ object AutoTerms {
         if (event.packet !is C0EPacketClickWindow) return
         val packet = event.packet as C0EPacketClickWindow
         if (packet.windowId != TermHandler.windowId) return
+
         MovementHandler.stopAll()
+        melodyInvWalkTimer.reset()
         Scheduler.addMS(Config.autoTermsInvWalkMelodySafe) {
             MovementHandler.restoreAll()
         }
@@ -130,11 +133,16 @@ object AutoTerms {
         val clicksRemaining =
             solutionSize - (if (TermHandler.termType !== TerminalTypes.MELODY) TermHandler.getSolution()!!.size else melodyStep)
 
-        val text1 = "§bIn Terminal: ${TermHandler.termType!!.display}"
+        var text1 = "§bIn Terminal: ${TermHandler.termType!!.display}"
         val text2 =
             "§3Clicks remaining: ${clicksRemaining}/${solutionSize}"
         val xSize = mc.fontRendererObj.getStringWidth(text1).coerceAtLeast(mc.fontRendererObj.getStringWidth(text2))
         val posX = ((scaledResolution.scaledWidth - xSize) / 2).toFloat()
+
+        if(!melodyInvWalkTimer.hasPassed(Config.autoTermsInvWalkMelodySafe.toLong())) {
+            text1 += " §4(${melodyInvWalkTimer.timeLeft(Config.autoTermsInvWalkMelodySafe.toLong())} ms)"
+        }
+
         val startY = (scaledResolution.scaledHeight / 2 - 5 - mc.fontRendererObj.FONT_HEIGHT * 2).toFloat()
         mc.fontRendererObj.drawStringWithShadow(text1, posX, startY, 0)
         mc.fontRendererObj.drawStringWithShadow(text2, posX, startY + mc.fontRendererObj.FONT_HEIGHT + 2, 0)
