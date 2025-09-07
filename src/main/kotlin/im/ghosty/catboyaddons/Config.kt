@@ -2,11 +2,13 @@ package im.ghosty.catboyaddons
 
 import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.annotations.Checkbox
+import cc.polyfrost.oneconfig.config.annotations.Color
 import cc.polyfrost.oneconfig.config.annotations.Dropdown
 import cc.polyfrost.oneconfig.config.annotations.DualOption
 import cc.polyfrost.oneconfig.config.annotations.Info
 import cc.polyfrost.oneconfig.config.annotations.Slider
 import cc.polyfrost.oneconfig.config.annotations.Switch
+import cc.polyfrost.oneconfig.config.core.OneColor
 import cc.polyfrost.oneconfig.config.data.InfoType
 import cc.polyfrost.oneconfig.config.data.Mod
 import cc.polyfrost.oneconfig.config.data.ModType
@@ -28,6 +30,19 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
     @JvmField
     @Switch(name = "Core Clip", description = "Lets you go through the gold door (core entrance) without any effort", size = 2, category = "F7", subcategory = "Phase 3")
     var coreClip = false
+
+    @JvmField
+    @Switch(name = "Terminal ESP", description = "Render inactive terminals", size = 2, category = "F7", subcategory = "Phase 3 - Terminal ESP")
+    var terminalESP = false
+    @JvmField
+    @Color(name = "Outline Color", description = "The color for the outside box", category = "F7", subcategory = "Phase 3 - Terminal ESP")
+    var terminalESPOutlineColor = OneColor(0xFFFF2222.toInt())
+    @JvmField
+    @Color(name = "Fill Color", description = "The color for the inside box", category = "F7", subcategory = "Phase 3 - Terminal ESP")
+    var terminalESPFillColor = OneColor(0x00FF2222)
+    @JvmField
+    @Slider(name = "First Click Delay", description = "The delay to wait before the very first click", min = 1f, max = 5f, step = 1, category = "F7", subcategory = "Phase 3 - Terminal ESP")
+    var terminalESPLineWidth = 2f
 
     @Info(text = "AutoTerms is at your own risk for the moment", type = InfoType.ERROR, category = "F7", subcategory = "Phase 3 - Auto Terms")
     private var _noteAutoTerms = false
@@ -98,6 +113,11 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
         notSecure("autoTermsInvWalkMelody")
         notSecure("autoTermsInvWalkMelodySafe")
 
+        addDependency("terminalESPOutlineColor", "terminalESP")
+        addDependency("terminalESPFillColor", "terminalESP")
+        addDependency("terminalESPLineWidth", "terminalESP")
+        todo("terminalESPFillColor")
+
         addDependency("autoTermsClickDelay", "autoTerms")
         addDependency("autoTermsFirstClickDelay", "autoTerms")
         addDependency("autoTermsClickOrder", "autoTerms")
@@ -117,9 +137,15 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
     }
 
     private fun notSecure(option: String) {
-        if (!optionNames.containsKey(option)) return
-        optionNames.get(option)!!.addDependency("Security Modules") {
+        optionNames[option]?.addDependency("Security Modules") {
             return@addDependency !secure
+        }
+    }
+
+    @Deprecated("Implement it at some point...", level = DeprecationLevel.WARNING)
+    private fun todo(option: String) {
+        optionNames[option]?.addDependency("Not done yet!") {
+            return@addDependency false
         }
     }
 

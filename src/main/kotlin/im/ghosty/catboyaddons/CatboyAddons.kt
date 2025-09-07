@@ -8,18 +8,24 @@ import im.ghosty.catboyaddons.features.f7.CoreClip
 import im.ghosty.catboyaddons.features.f7.P3AutoLeap
 import im.ghosty.catboyaddons.features.f7.terms.AutoTerms
 import im.ghosty.catboyaddons.features.f7.terms.TermHandler
-import im.ghosty.catboyaddons.utils.LeapHelper
+import im.ghosty.catboyaddons.features.f7.terms.TerminalESP
 import im.ghosty.catboyaddons.utils.Scheduler
 import im.ghosty.catboyaddons.utils.ScoreboardUtils
 import im.ghosty.catboyaddons.utils.StatusUtils
 import im.ghosty.catboyaddons.utils.events.EventHandler
+import im.ghosty.catboyaddons.utils.render.RenderUtils
 import net.minecraft.client.Minecraft
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 
-
-@Mod(modid = CatboyAddons.MODID, name = CatboyAddons.NAME, version = CatboyAddons.VERSION, modLanguageAdapter = "cc.polyfrost.oneconfig.utils.KotlinLanguageAdapter", clientSideOnly = true)
+@Mod(
+    modid = CatboyAddons.MODID,
+    name = CatboyAddons.NAME,
+    version = CatboyAddons.VERSION,
+    modLanguageAdapter = "cc.polyfrost.oneconfig.utils.KotlinLanguageAdapter",
+    clientSideOnly = true
+)
 object CatboyAddons {
 
     const val NAME = "@NAME@"
@@ -28,21 +34,21 @@ object CatboyAddons {
 
     const val PREFIX = "§a§l[§b§lCatboy§a§l] §7§l➔ §r"
 
-    val mc = Minecraft.getMinecraft();
+    val mc: Minecraft = Minecraft.getMinecraft();
 
     @Mod.EventHandler
     fun initialize(event: FMLInitializationEvent) {
         Config.init();
 
         listOf(
-            StatusUtils, ScoreboardUtils, Scheduler
-        ).forEach(MinecraftForge.EVENT_BUS::register) // Forge
-        listOf(
-            StatusUtils, ScoreboardUtils, LeapHelper,
-            AutoTerms, TermHandler,
-            MessageLogger, CoreClip, P3AutoLeap, EventHandler
-        ).forEach(EventManager.INSTANCE::register) // OneConfig
-
+            StatusUtils, ScoreboardUtils, Scheduler, RenderUtils, EventHandler,
+            TerminalESP, AutoTerms, TermHandler,
+            CoreClip, P3AutoLeap,
+            MessageLogger
+        ).forEach {
+            MinecraftForge.EVENT_BUS.register(it)
+            EventManager.INSTANCE.register(it)
+        }
         CommandManager.INSTANCE.registerCommand(MainCommand)
     }
 
