@@ -26,6 +26,15 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
     @Switch(name = "Shortbow Pull Fix", description = "Fixes shortbows pulling back when you have an arrow in your inventory", size = 2, category = "General", subcategory = "Features")
     var shortbowPullFix = false
 
+    @JvmField
+    @Switch(name = "Auto Refill Pearls", description = "Automatically pick Ender Pearls from stash if you're below or at 8", size = 1, category = "Dungeons", subcategory = "QoL")
+    var autoRefillPearls = false
+    @JvmField
+    @Switch(name = "Auto Refill Jerries", description = "Automatically peak Inflatable Jerries from stash if you're below or at 32", size = 1, category = "Dungeons", subcategory = "QoL")
+    var autoRefillJerries = false
+    @JvmField
+    @Switch(name = "Auto Potion Bag", description = "Automatically open the potion bag at the start of a run", size = 2, category = "Dungeons", subcategory = "QoL")
+    var autoOpenPotionBag = false
 
     @JvmField
     @Switch(name = "Core Clip", description = "Lets you go through the gold door (core entrance) without any effort", size = 2, category = "F7", subcategory = "Phase 3")
@@ -41,13 +50,24 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
     @Color(name = "Fill Color", description = "The color for the inside box", category = "F7", subcategory = "Phase 3 - Terminal ESP")
     var terminalESPFillColor = OneColor(0x00FF2222)
     @JvmField
-    @Slider(name = "First Click Delay", description = "The delay to wait before the very first click", min = 1f, max = 5f, step = 1, category = "F7", subcategory = "Phase 3 - Terminal ESP")
+    @Slider(name = "Line Width", description = "The delay to wait before the very first click", min = 1f, max = 5f, step = 1, category = "F7", subcategory = "Phase 3 - Terminal ESP")
     var terminalESPLineWidth = 2f
+
+    @Info(text = "TermAura is at your own risk for the moment", type = InfoType.ERROR, category = "F7", subcategory = "Phase 3 - Terminal Aura")
+    private var _noteTermAura = false
+    @Switch(name = "Terminal Aura", description = "Opens terminals automatically", size = 2, category = "F7", subcategory = "Phase 3 - Terminal Aura")
+    var terminalAura = false
+    @Slider(name = "Reach", description = "From how far you can interact with the terminal", min = 2f, max = 6f, category = "F7", subcategory = "Phase 3 - Terminal Aura")
+    var terminalAuraReach = 5f
+    @Switch(name = "Ground Only", description = "Will only attempt to open it when on ground", size = 2, category = "F7", subcategory = "Phase 3 - Terminal Aura")
+    var terminalAuraGroundOnly = false
+    @Slider(name = "Max Fov", description = "The maximum FOV away from the terminal you can have. Hope that makes any sense! :)", min = 10f, max = 360f, category = "F7", subcategory = "Phase 3 - Terminal Aura")
+    var terminalAuraFov = 360f
 
     @Info(text = "AutoTerms is at your own risk for the moment", type = InfoType.ERROR, category = "F7", subcategory = "Phase 3 - Auto Terms")
     private var _noteAutoTerms = false
     @JvmField
-    @Switch(name = "AutoTerms", description = "Automatically do terminals in", size = 2, category = "F7", subcategory = "Phase 3 - Auto Terms")
+    @Switch(name = "AutoTerms", description = "Automatically do terminals by clicking correct slots", size = 2, category = "F7", subcategory = "Phase 3 - Auto Terms")
     var autoTerms = false
     @JvmField
     @Slider(name = "Click Delay", description = "The delay to wait between each click", min = 50f, max = 500f, category = "F7", subcategory = "Phase 3 - Auto Terms")
@@ -109,6 +129,10 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
         initialize()
 
         notSecure("coreClip")
+        notSecure("terminalAura")
+        notSecure("terminalAuraReach")
+        notSecure("terminalAuraGroundOnly")
+        notSecure("terminalAuraFov")
         notSecure("autoTermsInvWalk")
         notSecure("autoTermsInvWalkMelody")
         notSecure("autoTermsInvWalkMelodySafe")
@@ -117,6 +141,11 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
         addDependency("terminalESPFillColor", "terminalESP")
         addDependency("terminalESPLineWidth", "terminalESP")
         todo("terminalESPFillColor")
+
+        addDependency("terminalAuraReach", "terminalAura")
+        addDependency("terminalAuraGroundOnly", "terminalAura")
+        addDependency("terminalAuraFov", "terminalAura")
+        todo("terminalAuraFov")
 
         addDependency("autoTermsClickDelay", "autoTerms")
         addDependency("autoTermsFirstClickDelay", "autoTerms")

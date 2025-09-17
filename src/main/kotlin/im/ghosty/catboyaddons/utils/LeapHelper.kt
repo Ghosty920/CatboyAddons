@@ -1,6 +1,6 @@
 package im.ghosty.catboyaddons.utils
 
-import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
+import im.ghosty.catboyaddons.utils.events.PacketReceiveEvent
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import im.ghosty.catboyaddons.CatboyAddons.mc
 import im.ghosty.catboyaddons.utils.Utils.removeFormatting
@@ -35,8 +35,8 @@ object LeapHelper {
         this.clickedLeap = true
     }
 
-    @Subscribe(priority = 1000069)
-    fun onPacket(event: ReceivePacketEvent) {
+    @Subscribe(priority = Integer.MAX_VALUE)
+    fun onPacket(event: PacketReceiveEvent) {
         if (leapPlayer == null) return
         if (event.packet is S2DPacketOpenWindow) {
             val packet = event.packet as S2DPacketOpenWindow

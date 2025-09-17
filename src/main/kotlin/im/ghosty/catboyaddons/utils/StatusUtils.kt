@@ -5,6 +5,7 @@ import cc.polyfrost.oneconfig.events.event.TickEvent
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import im.ghosty.catboyaddons.CatboyAddons.mc
 import im.ghosty.catboyaddons.Config
+import im.ghosty.catboyaddons.utils.events.WorldChangeEvent
 import net.minecraft.util.BlockPos
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -15,6 +16,7 @@ object StatusUtils {
 
     var onHypixel = false
     var inSkyblock = false
+    var inKuudra = false
     var inDungeon = false
     var dungeonFloor: String? = null
     var dungeonFloorNumber: Int? = null
@@ -37,11 +39,12 @@ object StatusUtils {
 
         if (Config.devStatusLiar) {
             // shh, don't tell anyone, but that's a lie!!
-            onHypixel = true;
-            inSkyblock = true;
-            inDungeon = true;
-            dungeonFloor = "F7";
-            dungeonFloorNumber = 7;
+            onHypixel = true
+            inKuudra = false
+            inSkyblock = true
+            inDungeon = true
+            dungeonFloor = "F7"
+            dungeonFloorNumber = 7
             dungeonInBoss = isInBossRoom()
             dungeonF7Phase = getPhase()
             dungeonF7SectionP3 = getP3Section()
@@ -63,6 +66,7 @@ object StatusUtils {
         }
 
         if (!inDungeon) updateDungeonStatus()
+        if (!inKuudra) updateKuudraStatus()
     }
 
     private fun updateDungeonStatus() = ScoreboardUtils.sidebarLines.find {
@@ -73,6 +77,14 @@ object StatusUtils {
         inDungeon = true
         dungeonFloor = ScoreboardUtils.cleanSB(this).substringAfter("(").substringBefore(")")
         dungeonFloorNumber = dungeonFloor?.lastOrNull()?.digitToIntOrNull() ?: 0
+    }
+
+    private fun updateKuudraStatus() = ScoreboardUtils.sidebarLines.find {
+        ScoreboardUtils.cleanSB(it).run {
+            contains("Kuudra's End (")
+        }
+    }?.run {
+        inKuudra = true
     }
 
     private val bossRoomCorners = mapOf(
@@ -132,9 +144,10 @@ object StatusUtils {
         onHypixel = mc.currentServerData?.serverIP?.contains("hypixel.net") ?: false
     }
 
-    @SubscribeEvent
-    fun onWorldLoad(event: WorldEvent.Load) {
+    @Subscribe(priority = 100000000)
+    fun onWorldLoad(event: WorldChangeEvent) {
         inSkyblock = false
+        inKuudra = false
         inDungeon = false
         dungeonFloor = null
         dungeonInBoss = false

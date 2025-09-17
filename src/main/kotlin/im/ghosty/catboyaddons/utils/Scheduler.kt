@@ -17,7 +17,10 @@ object Scheduler {
         tasks.removeAll {
             if (it.delay-- <= 0) {
                 mc.addScheduledTask { it.callback() }
-                true
+                if(it.loop > 0) {
+                    it.delay = it.loop
+                    false
+                } else true
             } else false
         }
     }
@@ -27,7 +30,11 @@ object Scheduler {
     }
 
     fun add(delay: Int, callback: () -> Unit) {
-        tasks.add(Task(delay, callback))
+        tasks.add(Task(delay, callback, 0))
+    }
+
+    fun loop(delay: Int, callback: () -> Unit) {
+        tasks.add(Task(delay, callback, delay))
     }
 
     fun addMS(delay: Int, callback: () -> Unit) {
@@ -37,6 +44,15 @@ object Scheduler {
         }.start()
     }
 
+    fun loopMS(delay: Int, callback: () -> Unit) {
+        Thread {
+            while(true) {
+                callback()
+                Thread.sleep(delay.toLong())
+            }
+        }.start()
+    }
+
 }
 
-open class Task(var delay: Int, val callback: () -> Unit)
+open class Task(var delay: Int, val callback: () -> Unit, val loop: Int)

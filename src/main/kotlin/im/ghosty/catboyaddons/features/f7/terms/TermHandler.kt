@@ -1,11 +1,11 @@
 package im.ghosty.catboyaddons.features.f7.terms
 
-import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
-import cc.polyfrost.oneconfig.events.event.WorldLoadEvent
+import im.ghosty.catboyaddons.utils.events.PacketReceiveEvent
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import im.ghosty.catboyaddons.Config
 import im.ghosty.catboyaddons.utils.Utils.removeFormatting
 import im.ghosty.catboyaddons.utils.events.InventoryCloseEvent
+import im.ghosty.catboyaddons.utils.events.WorldChangeEvent
 import net.minecraft.item.ItemStack
 import net.minecraft.network.play.server.S2DPacketOpenWindow
 import net.minecraft.network.play.server.S2FPacketSetSlot
@@ -25,12 +25,12 @@ object TermHandler {
     var items: ArrayList<ItemData>? = null
     @JvmField
     var solution: LinkedList<ItemData>? = null
-    var solutionSize = 0
+    var solutionSize = -1
 
     @Subscribe(priority = 1000069)
-    fun onPacketReceive(event: ReceivePacketEvent) {
+    fun onPacketReceive(event: PacketReceiveEvent) {
         if (event.packet is S2DPacketOpenWindow) {
-            val packet = event.packet as S2DPacketOpenWindow;
+            val packet = event.packet as S2DPacketOpenWindow
 
             if(inTerminal) {
                 windowId = packet.windowId
@@ -110,7 +110,7 @@ object TermHandler {
     }
 
     @Subscribe
-    fun onWorldLoad(event: WorldLoadEvent) {
+    fun onWorldChange(event: WorldChangeEvent) {
         reset()
     }
 

@@ -57,8 +57,7 @@ object Render3DUtils {
         lineWidth: Float,
         outlineColor: Int
     ) {
-        glPushMatrix()
-        glPushAttrib(GL_ALL_ATTRIB_BITS)
+        pushMatrix()
         disableBlend()
         disableTexture2D()
         blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -75,8 +74,7 @@ object Render3DUtils {
         enableDepth()
         enableTexture2D()
         enableBlend()
-        glPopAttrib()
-        glPopMatrix()
+        popMatrix()
     }
 
     private fun drawOutlinedBox(aabb: AxisAlignedBB) {

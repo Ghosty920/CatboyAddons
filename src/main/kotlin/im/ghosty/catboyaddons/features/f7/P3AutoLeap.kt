@@ -1,6 +1,6 @@
 package im.ghosty.catboyaddons.features.f7
 
-import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
+import im.ghosty.catboyaddons.utils.events.PacketReceiveEvent
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import im.ghosty.catboyaddons.CatboyAddons
 import im.ghosty.catboyaddons.Config
@@ -31,10 +31,9 @@ object P3AutoLeap {
     )
 
     @Subscribe
-    fun onChat(event: ReceivePacketEvent) {
+    fun onChat(event: PacketReceiveEvent) {
         if (!Config.p3AutoLeap || !StatusUtils.inF7Boss()) return
-        if (event.packet !is S02PacketChat) return
-        val packet = event.packet as S02PacketChat
+        val packet = event.packet as? S02PacketChat ?: return
         if (packet.type.toInt() != 0) return
 
         val message = packet.chatComponent.unformattedText.removeFormatting()

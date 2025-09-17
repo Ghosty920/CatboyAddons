@@ -1,6 +1,6 @@
 package im.ghosty.catboyaddons.utils
 
-import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
+import im.ghosty.catboyaddons.utils.events.PacketReceiveEvent
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import im.ghosty.catboyaddons.CatboyAddons.mc
 import im.ghosty.catboyaddons.utils.Utils.removeFormatting
@@ -18,7 +18,7 @@ object ScoreboardUtils {
         private set
 
     @Subscribe
-    fun onScoreboardChange(event: ReceivePacketEvent) {
+    fun onScoreboardChange(event: PacketReceiveEvent) {
         if (event.packet !is S3EPacketTeams
             && event.packet !is S3CPacketUpdateScore
             && event.packet !is S3DPacketDisplayScoreboard

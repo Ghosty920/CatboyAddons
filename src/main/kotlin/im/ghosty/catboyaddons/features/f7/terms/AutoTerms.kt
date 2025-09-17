@@ -1,9 +1,8 @@
 package im.ghosty.catboyaddons.features.f7.terms
 
 import cc.polyfrost.oneconfig.events.event.HudRenderEvent
-import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
+import im.ghosty.catboyaddons.utils.events.PacketReceiveEvent
 import cc.polyfrost.oneconfig.events.event.RenderEvent
-import cc.polyfrost.oneconfig.events.event.SendPacketEvent
 import cc.polyfrost.oneconfig.events.event.Stage
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import im.ghosty.catboyaddons.CatboyAddons.mc
@@ -14,6 +13,7 @@ import im.ghosty.catboyaddons.utils.Scheduler
 import im.ghosty.catboyaddons.utils.StatusUtils
 import im.ghosty.catboyaddons.utils.Utils.scaledResolution
 import im.ghosty.catboyaddons.utils.events.InventoryCloseEvent
+import im.ghosty.catboyaddons.utils.events.PacketSendEvent
 import net.minecraft.item.Item
 import net.minecraft.network.play.client.C0EPacketClickWindow
 import net.minecraft.network.play.server.S2DPacketOpenWindow
@@ -31,6 +31,9 @@ object AutoTerms {
     var melodyCorrect = -1
     var melodyInvWalkTimer = MSTimer(0)
 
+    /**
+     * Main solver
+     */
     @Subscribe
     fun onUpdate(event: RenderEvent) {
         if (event.stage !== Stage.END) return
@@ -74,14 +77,16 @@ object AutoTerms {
         clicked = true
     }
 
+    /**
+     * Melody solver
+     */
     @Subscribe
-    fun onSlotAdd(event: ReceivePacketEvent) {
+    fun onSlotAdd(event: PacketReceiveEvent) {
         if (!Config.autoTerms) return
         if (!TermHandler.inTerminal) return
         if (StatusUtils.dungeonF7Phase != 3) return
         if (TermHandler.termType !== TerminalTypes.MELODY) return
-        if (event.packet !is S2FPacketSetSlot) return
-        val packet = event.packet as S2FPacketSetSlot
+        val packet = event.packet as? S2FPacketSetSlot ?: return
         if (packet.func_149175_c() != TermHandler.windowId) return
 
         val slot = packet.func_149173_d()
@@ -100,20 +105,23 @@ object AutoTerms {
             val slotMod = (slot % 9) - 1
             if (slotMod != melodyCorrect) return
             val button = melodyStep * 9 + 16
+            println("Melody -> Clicking $button")
             Scheduler.add {
                 click(button, false)
             }
         }
     }
 
+    /**
+     * Melody safe delay
+     */
     @Subscribe
-    fun onMelodyClick(event: SendPacketEvent) {
+    fun onMelodyClick(event: PacketSendEvent) {
         if (!Config.autoTerms) return
         if (!TermHandler.inTerminal || !TermHandler.invWalk) return
         if (StatusUtils.dungeonF7Phase != 3) return
         if (TermHandler.termType !== TerminalTypes.MELODY) return
-        if (event.packet !is C0EPacketClickWindow) return
-        val packet = event.packet as C0EPacketClickWindow
+        val packet = event.packet as? C0EPacketClickWindow ?: return
         if (packet.windowId != TermHandler.windowId) return
 
         MovementHandler.stopAll()
@@ -123,11 +131,14 @@ object AutoTerms {
         }
     }
 
+    /**
+     * Render
+     */
     @Subscribe
     fun onRender(event: HudRenderEvent) {
         if (!Config.autoTerms) return
         if (StatusUtils.dungeonF7Phase != 3) return
-        if (!TermHandler.invWalk) return
+        if (!TermHandler.invWalk || TermHandler.solutionSize < 0) return
 
         val solutionSize = if (TermHandler.termType !== TerminalTypes.MELODY) TermHandler.solutionSize else 4
         val clicksRemaining =
@@ -149,7 +160,7 @@ object AutoTerms {
     }
 
     @Subscribe
-    fun onOpenWindow(event: ReceivePacketEvent) {
+    fun onOpenWindow(event: PacketReceiveEvent) {
         if (event.packet !is S2DPacketOpenWindow) return
         clicked = false
         melodyCorrect = -1

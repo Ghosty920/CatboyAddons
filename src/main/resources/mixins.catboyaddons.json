@@ -4,11 +4,10 @@
   "package": "im.ghosty.catboyaddons.mixin",
   "refmap": "mixins.${modid}.refmap.json",
   "client": [
-    "C0DPacketCloseWindowAccessor",
     "EntityPlayerMixin",
     "EntityPlayerSPMixin",
     "ModListMixin",
     "MovementInputMixin",
-    "S2EPacketCloseWindowAccessor"
+    "NetworkManagerMixin"
   ]
 }

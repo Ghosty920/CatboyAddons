@@ -4,10 +4,13 @@ import cc.polyfrost.oneconfig.events.EventManager
 import cc.polyfrost.oneconfig.utils.commands.CommandManager
 import im.ghosty.catboyaddons.commands.MainCommand
 import im.ghosty.catboyaddons.features.MessageLogger
+import im.ghosty.catboyaddons.features.dungeons.AutoPotionBag
+import im.ghosty.catboyaddons.features.dungeons.AutoRefill
 import im.ghosty.catboyaddons.features.f7.CoreClip
 import im.ghosty.catboyaddons.features.f7.P3AutoLeap
 import im.ghosty.catboyaddons.features.f7.terms.AutoTerms
 import im.ghosty.catboyaddons.features.f7.terms.TermHandler
+import im.ghosty.catboyaddons.features.f7.terms.TerminalAura
 import im.ghosty.catboyaddons.features.f7.terms.TerminalESP
 import im.ghosty.catboyaddons.utils.Scheduler
 import im.ghosty.catboyaddons.utils.ScoreboardUtils
@@ -42,8 +45,9 @@ object CatboyAddons {
 
         listOf(
             StatusUtils, ScoreboardUtils, Scheduler, RenderUtils, EventHandler,
-            TerminalESP, AutoTerms, TermHandler,
+            TerminalESP, AutoTerms, TermHandler, TerminalAura,
             CoreClip, P3AutoLeap,
+            AutoPotionBag, AutoRefill,
             MessageLogger
         ).forEach {
             MinecraftForge.EVENT_BUS.register(it)
