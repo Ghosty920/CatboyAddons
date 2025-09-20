@@ -7,7 +7,6 @@
     "EntityPlayerMixin",
     "EntityPlayerSPMixin",
     "ModListMixin",
-    "MovementInputMixin",
-    "NetworkManagerMixin"
+    "MovementInputMixin"
   ]
 }

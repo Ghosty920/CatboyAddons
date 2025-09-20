@@ -35,10 +35,11 @@ object MainCommand {
 
     @SubCommand(description = "Leap to a player", aliases = ["leapto"])
     fun leap(target: String) {
-        mc.theWorld?.playerEntities?.find { it.name.equals(target, true) }?.let {
+        /*mc.theWorld?.playerEntities?.find { it.name.equals(target, true) }?.let {
             Utils.sendToChat("§aAttempting to leap to §f${it.displayName.formattedText}")
             LeapHelper.leapTo(it)
-        }
+        }*/
+        LeapHelper.leapTo(target)
     }
 
 }

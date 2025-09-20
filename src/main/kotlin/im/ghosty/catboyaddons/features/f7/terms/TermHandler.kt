@@ -30,7 +30,7 @@ object TermHandler {
     @Subscribe(priority = 1000069)
     fun onPacketReceive(event: PacketReceiveEvent) {
         if (event.packet is S2DPacketOpenWindow) {
-            val packet = event.packet as S2DPacketOpenWindow
+            val packet = event.packet
 
             if(inTerminal) {
                 windowId = packet.windowId
@@ -59,8 +59,8 @@ object TermHandler {
         }
 
         if (event.packet is S2FPacketSetSlot) {
+            val packet = event.packet
             if (!inTerminal || receivedAll) return
-            val packet = event.packet as S2FPacketSetSlot
             if (packet.func_149175_c() != windowId) return
             if (packet.func_149173_d() == termType!!.rows * 9 - 1) {
                 receivedAll = true

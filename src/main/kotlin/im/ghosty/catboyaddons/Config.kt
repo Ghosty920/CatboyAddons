@@ -27,8 +27,8 @@ object Config : Config(Mod(CatboyAddons.NAME, ModType.SKYBLOCK), "${CatboyAddons
     var shortbowPullFix = false
 
     @JvmField
-    @Switch(name = "Auto Refill Pearls", description = "Automatically pick Ender Pearls from stash if you're below or at 8", size = 1, category = "Dungeons", subcategory = "QoL")
-    var autoRefillPearls = false
+    @Dropdown(name = "Auto Refill Pearls", description = "Automatically pick Ender Pearls from stash if you're below or at 8", options = ["Never", "In a Run", "Always"], size = 1, category = "Dungeons", subcategory = "QoL")
+    var autoRefillPearls = 0
     @JvmField
     @Switch(name = "Auto Refill Jerries", description = "Automatically peak Inflatable Jerries from stash if you're below or at 32", size = 1, category = "Dungeons", subcategory = "QoL")
     var autoRefillJerries = false

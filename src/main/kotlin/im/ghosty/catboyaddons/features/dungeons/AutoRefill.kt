@@ -10,8 +10,8 @@ object AutoRefill {
 
     init {
         Scheduler.loop(5) {
-            if (Config.autoRefillPearls) {
-                if (!StatusUtils.inDungeon) return@loop
+            if (Config.autoRefillPearls > 0) {
+                if (Config.autoRefillPearls == 1 && !StatusUtils.inDungeon) return@loop
                 val item = getHotbarItemByName("§fEnder Pearl", true) ?: return@loop
                 val missing = 16 - item.stackSize
                 if(missing >= 8)

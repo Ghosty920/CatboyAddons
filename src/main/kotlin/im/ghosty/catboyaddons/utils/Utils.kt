@@ -16,9 +16,10 @@ object Utils {
     fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, r -> acc.replace(r, "") }
 
     private val unicodeRegex = Regex("[^\\u0000-\\u007F§]")
+    private val sbLevelRegex = Regex("^\\[\\d{1,3}] ")
     fun String.removeUnicode() = this.remove(unicodeRegex)
-
     fun String.removeFormatting(): String = EnumChatFormatting.getTextWithoutFormattingCodes(this)
+    fun String.removeSBLevel(): String = this.remove(sbLevelRegex)
 
     val logger = LogManager.getLogger("CatboyAddons")
 

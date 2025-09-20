@@ -12,6 +12,7 @@ import im.ghosty.catboyaddons.features.f7.terms.AutoTerms
 import im.ghosty.catboyaddons.features.f7.terms.TermHandler
 import im.ghosty.catboyaddons.features.f7.terms.TerminalAura
 import im.ghosty.catboyaddons.features.f7.terms.TerminalESP
+import im.ghosty.catboyaddons.utils.LeapHelper
 import im.ghosty.catboyaddons.utils.Scheduler
 import im.ghosty.catboyaddons.utils.ScoreboardUtils
 import im.ghosty.catboyaddons.utils.StatusUtils
@@ -44,7 +45,7 @@ object CatboyAddons {
         Config.init();
 
         listOf(
-            StatusUtils, ScoreboardUtils, Scheduler, RenderUtils, EventHandler,
+            StatusUtils, ScoreboardUtils, Scheduler, RenderUtils, EventHandler, LeapHelper,
             TerminalESP, AutoTerms, TermHandler, TerminalAura,
             CoreClip, P3AutoLeap,
             AutoPotionBag, AutoRefill,

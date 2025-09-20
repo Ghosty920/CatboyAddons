@@ -49,9 +49,8 @@ object TerminalAura {
         }
 
         if (event.packet is S02PacketChat) {
-            val packet = event.packet as S02PacketChat
-            if (packet.type.toInt() != 0) return
-            if (packet.chatComponent.unformattedText.removeFormatting() != "This Terminal doesn't seem to be responsive at the moment.") return
+            if (event.packet.type.toInt() != 0) return
+            if (event.packet.chatComponent.unformattedText.removeFormatting() != "This Terminal doesn't seem to be responsive at the moment.") return
             println("Terminal not responsive found! gg peak")
             clickDelay = 0
             return
